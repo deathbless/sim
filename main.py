@@ -42,12 +42,10 @@ def findText(html):
         t = t + 1
 
     print waitList.__len__()
-    openUrl(waitList[14])
-    print waitList[14]
     for url in waitList:
         # print num, ":", url
-        # num = num + 1
-        # openUrl(url)
+        num = num + 1
+        openUrl(url)
         pass
 
 
