@@ -164,6 +164,11 @@ def openMod():
         print title + " has done!"
 
 if __name__ == '__main__':
-    getPage(1)
-
+    os.chdir('..')
+    if 'mods' not in os.listdir('.'):
+        os.mkdir('mods')
+    os.chdir("mods")
+    print "please input the number of page:"
+    num = raw_input()
+    getPage(int(num))
     pass
