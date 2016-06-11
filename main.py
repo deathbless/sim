@@ -2,7 +2,7 @@
 __author__ = 'deathbless'
 
 
-import cookielib,urllib2,urllib
+import cookielib,urllib2
 import gzip
 import StringIO
 import sys
@@ -81,6 +81,20 @@ def openUrl(url):
 
 def getList(num):
     pass
+
+
+def login():
+    """
+    登录模块，带会员cookie登录
+    :return: 登录器对象
+    """
+    cookie = cookielib.MozillaCookieJar()
+    cookie.load('localCookies.txt', ignore_discard=True, ignore_expires=True)
+    opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))
+    return opener
+
+def
+
 
 if __name__ == '__main__':
     test()
