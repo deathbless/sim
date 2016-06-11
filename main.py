@@ -12,6 +12,38 @@ f = open("test.txt", "w")
 
 waitList = []  # 待爬取的mod的url集合
 
+def getFile(url):
+    """
+    从url处获取图片的二进制
+    :param url: 图片url
+    :return: 二进制数据
+    """
+    try:
+        cj = cookielib.LWPCookieJar()
+        opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
+        urllib2.install_opener(opener)
+
+        req = urllib2.Request(url)
+        operate = opener.open(req)
+        data = operate.read()
+        return data
+    except BaseException, e:
+        print e
+        return None
+
+def saveFile(file_name, data):
+    """
+    保存图片
+    :param file_name: 图片文件名
+    :param data: 图片数据
+    :return:
+    """
+    if data == None:
+        return
+    f = open(file_name, "wb")
+    f.write(data)
+    f.flush()
+    f.close()
 
 def login():
     """
@@ -85,7 +117,8 @@ def openMod():
     titleEnd1 = '<span class="icon-star star-big star-'
     titleEnd2 = '</div>'
     authorStart = 'class="big-creator">'
-    pictureStart = 'http://www.thesimsresource.com/'
+    pictureStart = '<a href="/scaled/'
+    pictureBefore = 'http://www.thesimsresource.com'
 
     for url in waitList:
         html = openUrl(url)
@@ -109,21 +142,28 @@ def openMod():
         if filename not in os.listdir('.'):
             os.mkdir(filename)
         os.chdir(filename)
-        print "now downloading --- " + filename
+        print "now downloading " + filename + " ,please wait for a while"
         # 建立文件夹并进入完成
         jump = '<meta http-equiv="refresh" content="0.2;url=' + url + '">'
         web = open(filename + ".html", "w")
         web.write(jump)
         web.close()
         # 建立链接快捷方式完成
-
+        num = 1
+        pictureSnum = html.find(pictureStart)
+        while pictureSnum != -1:
+            pictureEnum = html.find('"', pictureSnum + len(pictureStart))
+            picture = html[pictureSnum + 9:pictureEnum]
+            pictureUrl = pictureBefore + picture
+            data = getFile(pictureUrl)
+            saveFile(title + '_' + str(num) + '.jpg', data)
+            num = num + 1
+            pictureSnum = html.find(pictureStart, pictureEnum)
+        # 存储图片完成
         os.chdir('..')  # 退出当前mod文件夹
-
-
-
-
-
+        print title + " has done!"
 
 if __name__ == '__main__':
     getPage(1)
+
     pass
