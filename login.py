@@ -7,6 +7,7 @@ import StringIO
 def login(name, password):
     pass
 
+f = open("test.txt", "w")
 
 def test():
     cookie = cookielib.MozillaCookieJar()
@@ -20,8 +21,11 @@ def test():
     req2 = urllib2.Request(url2)
     response2 = opener.open(req2)
     data = response2.read()
-    url3 = ""
-
+    url3 = "http://www.thesimsresource.com/mytsr/account/account"
+    req3 = urllib2.Request(url3)
+    response3 = opener.open(req3)
+    data = response3.read()
+    f.write(data)
 
 
 if __name__ == '__main__':

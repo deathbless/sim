@@ -131,16 +131,22 @@ def openMod():
         if titleSnum != -1 and titleEnum != -1:
             title = html[titleSnum + len(titleStart):titleEnum]
             title = title.strip()
+            title = title.title()
+            title = title.replace(" ", "")
         # 标题获取完成
         authorSnum = html.find(authorStart)
         authorEnum = html.find('<', authorSnum + len(authorStart))
         if authorSnum != -1 and authorEnum != -1:
             author = html[authorSnum + len(authorStart):authorEnum]
             author = author.strip()
+            author = author.title()
+            author = author.replace(" ", "")
         # 作者获取完成
         filename = '[' + author + ']' + title
         if filename not in os.listdir('.'):
             os.mkdir(filename)
+        else:
+            continue
         os.chdir(filename)
         print "now downloading " + filename + " ,please wait for a while"
         # 建立文件夹并进入完成
