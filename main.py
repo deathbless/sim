@@ -6,7 +6,7 @@ import cookielib
 import urllib2
 import gzip
 import StringIO
-import sys
+import os
 
 f = open("test.txt", "w")
 
@@ -78,13 +78,14 @@ def openMod():
     具体打开mod的url
     :return:
     """
-    #TODO 添加数据库检测
+    # TODO 添加数据库检测
     # print len(waitList)
 
     titleStart = '<div class="big-header">'
     titleEnd1 = '<span class="icon-star star-big star-'
     titleEnd2 = '</div>'
     authorStart = 'class="big-creator">'
+    pictureStart = 'http://www.thesimsresource.com/'
 
     for url in waitList:
         html = openUrl(url)
@@ -104,7 +105,19 @@ def openMod():
             author = html[authorSnum + len(authorStart):authorEnum]
             author = author.strip()
         # 作者获取完成
-        print '[' + author + ']' + title
+        filename = '[' + author + ']' + title
+        if filename not in os.listdir('.'):
+            os.mkdir(filename)
+        os.chdir(filename)
+        print "now downloading --- " + filename
+        # 建立文件夹并进入完成
+        jump = '<meta http-equiv="refresh" content="0.2;url=' + url + '">'
+        web = open(filename + ".html", "w")
+        web.write(jump)
+        web.close()
+        # 建立链接快捷方式完成
+
+        os.chdir('..')  # 退出当前mod文件夹
 
 
 
@@ -112,5 +125,5 @@ def openMod():
 
 
 if __name__ == '__main__':
-    getPage(2)
+    getPage(1)
     pass
