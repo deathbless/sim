@@ -8,10 +8,9 @@ import gzip
 import StringIO
 import os
 
-f = open("test.txt", "w")
-
 waitList = []  # 待爬取的mod的url集合
 opener = None  # 带cookie的模拟浏览器
+cookie = cookielib.MozillaCookieJar()  # cookie
 l = []  # cookie集合
 
 def getFile(url):
@@ -52,7 +51,7 @@ def login():
     登录模块，带会员cookie登录
     :return: 登录器对象
     """
-    global opener, l
+    global opener, l, cookie
     cookie = cookielib.MozillaCookieJar()
     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))
     url = "http://www.thesimsresource.com:80/ajax.php?c=account&a=dologin&email=mfmiss%40hotmail.com&password=lopatinsky4012"
@@ -64,7 +63,6 @@ def login():
     req2 = urllib2.Request(url2)
     response2 = opener.open(req2)
     data = response2.read()
-    # print(cookie)
     return opener
 
 def downloadPackage(url, filename):
@@ -220,16 +218,18 @@ def openMod():
             num = num + 1
             pictureSnum = html.find(pictureStart, pictureEnum)
         # 存储图片完成
+        if str(cookie._cookies).find("3306870") == -1:
+            continue  # 如果没有登录会员就鸽了下载
         downloadPackage(url, filename)
         os.chdir('..')  # 退出当前mod文件夹
         print title + " has done!"
 
 if __name__ == '__main__':
     login()
-    os.chdir('..')
-    if 'mods' not in os.listdir('.'):
-        os.mkdir('mods')
-    os.chdir("mods")
-    print "please input the number of page:"
-    num = raw_input()
-    getPage(int(num))
+    # os.chdir('..')
+    # if 'mods' not in os.listdir('.'):
+    #     os.mkdir('mods')
+    # os.chdir("mods")
+    # print "please input the number of page:"
+    # num = raw_input()
+    # getPage(int(num))
