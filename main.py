@@ -219,6 +219,8 @@ def openMod():
             pictureSnum = html.find(pictureStart, pictureEnum)
         # 存储图片完成
         if str(cookie._cookies).find("3306870") == -1:
+            os.chdir('..')  # 退出当前mod文件夹
+            print title + " has done!" + "(no vip download gggggggg)"
             continue  # 如果没有登录会员就鸽了下载
         downloadPackage(url, filename)
         os.chdir('..')  # 退出当前mod文件夹
@@ -226,10 +228,10 @@ def openMod():
 
 if __name__ == '__main__':
     login()
-    # os.chdir('..')
-    # if 'mods' not in os.listdir('.'):
-    #     os.mkdir('mods')
-    # os.chdir("mods")
-    # print "please input the number of page:"
-    # num = raw_input()
-    # getPage(int(num))
+    os.chdir('..')
+    if 'mods' not in os.listdir('.'):
+        os.mkdir('mods')
+    os.chdir("mods")
+    print "please input the number of page:"
+    num = raw_input()
+    getPage(int(num))
