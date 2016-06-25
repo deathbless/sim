@@ -12,6 +12,26 @@ waitList = []  # 待爬取的mod的url集合
 opener = None  # 带cookie的模拟浏览器
 cookie = cookielib.MozillaCookieJar()  # cookie
 l = []  # cookie集合
+userFile = "user.txt"
+userName = ""
+passWord = ""
+memberId = ""
+flag = False  # 是否登录
+
+def getUser():
+    """
+    获取用户名密码
+    :return:
+    """
+    global userName, passWord
+    if userFile not in os.listdir('.'):
+        os.mkdir(userFile)
+        return
+    f = open(userFile, "r")
+    userName = f.readline().strip()
+    passWord = f.readline().strip()
+    userName = userName.replace("@", "%40")
+    # print userName, "\n", passWord
 
 def getFile(url):
     """
@@ -51,15 +71,21 @@ def login():
     登录模块，带会员cookie登录
     :return: 登录器对象
     """
-    global opener, l, cookie
+    global opener, l, cookie, memberId, flag
+    getUser()
     cookie = cookielib.MozillaCookieJar()
     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))
-    url = "http://www.thesimsresource.com:80/ajax.php?c=account&a=dologin&email=mfmiss%40hotmail.com&password=lopatinsky4012"
+    url = "http://www.thesimsresource.com:80/ajax.php?c=account&a=dologin&email=" + userName + "&password=" + passWord
     req = urllib2.Request(url)
     response = opener.open(req)
     data = response.read()
     l = eval(data)
+    if l.has_key("error"):
+        flag = False
+        return
+    flag = True
     url2 = "http://www.thesimsresource.com:80/ajax.php?c=account&a=init&key=" + l['LoginKey'] + "&mid=" + l['MemberID']
+    memberId = l['MemberID']
     req2 = urllib2.Request(url2)
     response2 = opener.open(req2)
     data = response2.read()
@@ -72,8 +98,8 @@ def downloadPackage(url, filename):
     :param filename: 保存的名称
     :return:
     """
-    itemId = url[url.find("/id/") + len("/id/"):url.find("/",url.find("/id/") + len("/id/"))]
-    url4 = "http://www.thesimsresource.com:80/ajax.php?c=downloads&a=getdownloadurl&ajax=1&itemid=" + itemId + "&mid=3306870&lk=" + l['LoginKey']
+    itemId = url[url.find("/id/") + len("/id/"):url.find("/", url.find("/id/") + len("/id/"))]
+    url4 = "http://www.thesimsresource.com:80/ajax.php?c=downloads&a=getdownloadurl&ajax=1&itemid=" + itemId + "&mid=" + memberId + "&lk=" + l['LoginKey']
     headers = {
         'Host': 'www.thesimsresource.com',
         'Proxy-Connection': 'keep-alive',
@@ -125,16 +151,24 @@ def openUrl(url):
         html = respHtml
     return html
 
-def getPage(num):
+def getPage(num, search):
     """
     爬取列表页面获得具体mod的url
     :param num: 要爬取页面的数量
+    :param search: 搜索关键词
     :return: mod具体的url集合list
     """
-    simUrlStart = "http://www.thesimsresource.com/downloads/browse/category/sims4-objects/page/"
+    if search != "":
+        if search not in os.listdir('.'):
+            os.mkdir(search)
+        os.chdir(search)
+        simUrlStart = "http://www.thesimsresource.com/downloads/browse/category/sims4-objects/search/" + search + "/page/"
+    else:
+        simUrlStart = "http://www.thesimsresource.com/downloads/browse/category/sims4-objects/page/"
     simUrlEnd = "/cnt/8748/"
     for i in range(1, num + 1):
         simUrl = simUrlStart + str(i) + simUrlEnd
+        print simUrl
         html = openUrl(simUrl)
         findMod(html)
 
@@ -218,7 +252,7 @@ def openMod():
             num = num + 1
             pictureSnum = html.find(pictureStart, pictureEnum)
         # 存储图片完成
-        if str(cookie._cookies).find("3306870") == -1:
+        if str(cookie._cookies).find(memberId) == -1:
             os.chdir('..')  # 退出当前mod文件夹
             print title + " has done!" + "(no vip download gggggggg)"
             continue  # 如果没有登录会员就鸽了下载
@@ -228,10 +262,12 @@ def openMod():
 
 if __name__ == '__main__':
     login()
+    print "please input the keyword you want to search(can be empty):"
+    search = raw_input()
     os.chdir('..')
     if 'mods' not in os.listdir('.'):
         os.mkdir('mods')
     os.chdir("mods")
     print "please input the number of page:"
     num = raw_input()
-    getPage(int(num))
+    getPage(int(num), search)
