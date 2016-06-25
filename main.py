@@ -7,6 +7,7 @@ import urllib2
 import gzip
 import StringIO
 import os
+import easygui
 
 waitList = []  # 待爬取的mod的url集合
 opener = None  # 带cookie的模拟浏览器
@@ -206,6 +207,10 @@ def openMod():
     pictureStart = '<a href="/scaled/'
     pictureBefore = 'http://www.thesimsresource.com'
 
+    if len(waitList) == 0:
+        easygui.msgbox(u"没有搜索到的内容！", u"搜索失败！", u"雪崩")
+        return
+
     for url in waitList:
         html = openUrl(url)
         title = "null"
@@ -262,12 +267,19 @@ def openMod():
 
 if __name__ == '__main__':
     login()
-    print "please input the keyword you want to search(can be empty):"
-    search = raw_input()
+    search = easygui.enterbox(u"请输入要搜索的关键字（可以为空，不能为中文！）:", u"搜索")
+    # search = raw_input()
     os.chdir('..')
     if 'mods' not in os.listdir('.'):
         os.mkdir('mods')
     os.chdir("mods")
-    print "please input the number of page:"
-    num = raw_input()
-    getPage(int(num), search)
+    num = easygui.enterbox(u"请输入页码的数量：", u"范围")
+    # print "please input the number of page:"
+    # num = raw_input()
+    if num == "":
+        num = 0
+    try:
+        num = int(num)
+    except:
+        easygui.msgbox(u"输入的页码不是数字！", u"错误")
+    getPage(num, search)
