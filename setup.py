@@ -9,4 +9,6 @@ options = {"py2exe":
                    "bundle_files": 1
                }}
 
-setup(console=["main.py"])
+setup(console=["main.py"], data_file=[("user.txt")])
+
+# python setup.py py2exe

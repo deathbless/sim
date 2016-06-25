@@ -18,6 +18,7 @@ userName = ""
 passWord = ""
 memberId = ""
 flag = False  # 是否登录
+loginKey = ""  # 登录密钥
 
 def getUser():
     """
@@ -26,7 +27,8 @@ def getUser():
     """
     global userName, passWord
     if userFile not in os.listdir('.'):
-        os.mkdir(userFile)
+        f = open(userFile, "w")
+        f.close()
         return
     f = open(userFile, "r")
     userName = f.readline().strip()
@@ -72,7 +74,7 @@ def login():
     登录模块，带会员cookie登录
     :return: 登录器对象
     """
-    global opener, l, cookie, memberId, flag
+    global opener, l, cookie, memberId, flag, loginKey
     getUser()
     cookie = cookielib.MozillaCookieJar()
     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))
@@ -87,6 +89,7 @@ def login():
     flag = True
     url2 = "http://www.thesimsresource.com:80/ajax.php?c=account&a=init&key=" + l['LoginKey'] + "&mid=" + l['MemberID']
     memberId = l['MemberID']
+    loginKey = l['LoginKey']
     req2 = urllib2.Request(url2)
     response2 = opener.open(req2)
     data = response2.read()
@@ -100,7 +103,7 @@ def downloadPackage(url, filename):
     :return:
     """
     itemId = url[url.find("/id/") + len("/id/"):url.find("/", url.find("/id/") + len("/id/"))]
-    url4 = "http://www.thesimsresource.com:80/ajax.php?c=downloads&a=getdownloadurl&ajax=1&itemid=" + itemId + "&mid=" + memberId + "&lk=" + l['LoginKey']
+    url4 = "http://www.thesimsresource.com:80/ajax.php?c=downloads&a=getdownloadurl&ajax=1&itemid=" + itemId + "&mid=" + memberId + "&lk=" + loginKey
     headers = {
         'Host': 'www.thesimsresource.com',
         'Proxy-Connection': 'keep-alive',
@@ -257,7 +260,7 @@ def openMod():
             num = num + 1
             pictureSnum = html.find(pictureStart, pictureEnum)
         # 存储图片完成
-        if str(cookie._cookies).find(memberId) == -1:
+        if flag == False:
             os.chdir('..')  # 退出当前mod文件夹
             print title + " has done!" + "(no vip download gggggggg)"
             continue  # 如果没有登录会员就鸽了下载
@@ -268,6 +271,7 @@ def openMod():
 if __name__ == '__main__':
     login()
     search = easygui.enterbox(u"请输入要搜索的关键字（可以为空，不能为中文！）:", u"搜索")
+    # print "please input the keyword you want to search(can be empty):"
     # search = raw_input()
     os.chdir('..')
     if 'mods' not in os.listdir('.'):
