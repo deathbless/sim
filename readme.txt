@@ -1,5 +1,4 @@
-v0.5+0.6?£¨ÔÝ¶¨
-Ôö¼ÓÁËËÑË÷¹¦ÄÜ£¬°ÑµÇÂ¼ÐÅÏ¢Áà³öÀ´²»ÄÚÖÃÁË£¬¼ÓÁËUI£¬·Ç³£³ó£¬Ã»°ì·¨´úÂë¸ü³ó£¬ÉóÃÀÃ»¾ÈQAQ
-user.txtÀïÃæµÚÒ»ÐÐÐ´ÓÃ»§Ãû£¬µÚ¶þÐÐÐ´ÃÜÂë£¬Ã»ÓÐ¾Í¸ëÁË²»Ìî£¬µ«ÊÇÃ»·¨ÓÃËÑË÷¹¦ÄÜ£¬²¢ÇÒ·Çvip»áµ¼ÖÂÖ»ÄÜÏÂÔØÍ¼Æ¬ºÍÐÅÏ¢Ã»·¨ÏÂÔØ¾ßÌåmod ¡ñ¦ä¡ñ
-githubµØÖ·https://github.com/deathbless/sim
-ÓÐÒâ¼û½¨ÒéÈ¥µãÜ³qq532046825
+v0.5+0.6?ï¼ˆæš‚å®š
+å¢žåŠ äº†æœç´¢åŠŸèƒ½ï¼ŒæŠŠç™»å½•ä¿¡æ¯æ‹Žå‡ºæ¥ä¸å†…ç½®äº†ï¼ŒåŠ äº†UIï¼Œéžå¸¸ä¸‘ï¼Œæ²¡åŠžæ³•ä»£ç æ›´ä¸‘ï¼Œå®¡ç¾Žæ²¡æ•‘QAQ
+user.txté‡Œé¢ç¬¬ä¸€è¡Œå†™ç”¨æˆ·åï¼Œç¬¬äºŒè¡Œå†™å¯†ç ï¼Œæ²¡æœ‰å°±é¸½äº†ä¸å¡«ï¼Œä½†æ˜¯æ²¡æ³•ç”¨æœç´¢åŠŸèƒ½ï¼Œå¹¶ä¸”éžvipä¼šå¯¼è‡´åªèƒ½ä¸‹è½½å›¾ç‰‡å’Œä¿¡æ¯æ²¡æ³•ä¸‹è½½å…·ä½“mod â—ï¸¿â—
+githubåœ°å€https://github.com/deathbless/sim
